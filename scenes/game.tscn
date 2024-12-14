@@ -1,0 +1,171 @@
+[gd_scene load_steps=9 format=3 uid="uid://dvepm3yew115w"]
+
+[ext_resource type="PackedScene" uid="uid://xlbowqgxf433" path="res://scenes/player.tscn" id="1_1pbt3"]
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_u31r6"]
+[ext_resource type="PackedScene" uid="uid://bh21u6t6u6wyo" path="res://scenes/enemy.tscn" id="2_c5oxm"]
+[ext_resource type="AudioStream" uid="uid://d2w8wbclyiy1p" path="res://assets/sound/ping_pong_8bit_peeeeeep.ogg" id="4_53f0a"]
+[ext_resource type="Texture2D" uid="uid://bknya32gant60" path="res://assets/paddle.png" id="5_j4uiv"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_uqt4b"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_go27i"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_o0ift"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_u31r6")
+
+[node name="Player" parent="." instance=ExtResource("1_1pbt3")]
+unique_name_in_owner = true
+position = Vector2(1145, 335)
+
+[node name="PlayerBoundaries" type="Node" parent="."]
+
+[node name="PlayerLeftBoundary" type="StaticBody2D" parent="PlayerBoundaries"]
+position = Vector2(1139, 340)
+rotation = 1.5708
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerBoundaries/PlayerLeftBoundary"]
+shape = SubResource("WorldBoundaryShape2D_uqt4b")
+
+[node name="PlayerRightBoundary" type="StaticBody2D" parent="PlayerBoundaries"]
+position = Vector2(1148, 343)
+rotation = -1.5708
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerBoundaries/PlayerRightBoundary"]
+shape = SubResource("WorldBoundaryShape2D_uqt4b")
+
+[node name="Enemy" parent="." instance=ExtResource("2_c5oxm")]
+position = Vector2(7, 295)
+
+[node name="WorldBoundaries" type="Node" parent="."]
+
+[node name="BottomBoundary" type="StaticBody2D" parent="WorldBoundaries"]
+position = Vector2(1148, 645)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundaries/BottomBoundary"]
+shape = SubResource("WorldBoundaryShape2D_uqt4b")
+
+[node name="BottomBoundary2" type="StaticBody2D" parent="WorldBoundaries"]
+position = Vector2(1151, 2)
+rotation = -3.14159
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundaries/BottomBoundary2"]
+shape = SubResource("WorldBoundaryShape2D_uqt4b")
+
+[node name="AreaPlayerGoal" type="Area2D" parent="WorldBoundaries"]
+position = Vector2(1155, 199)
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundaries/AreaPlayerGoal"]
+rotation = -1.5708
+shape = SubResource("WorldBoundaryShape2D_go27i")
+
+[node name="AreaAiGoal" type="Area2D" parent="WorldBoundaries"]
+position = Vector2(-18, 94)
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WorldBoundaries/AreaAiGoal"]
+position = Vector2(-3, 0)
+rotation = 1.5708
+shape = SubResource("WorldBoundaryShape2D_o0ift")
+
+[node name="UI" type="Control" parent="."]
+process_mode = 2
+z_index = 1
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AiScoreText" type="Label" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 490.0
+offset_right = 530.0
+offset_bottom = 53.0
+theme_override_font_sizes/font_size = 38
+text = "0"
+
+[node name="PlayerScoreText" type="Label" parent="UI"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 637.0
+offset_right = 677.0
+offset_bottom = 53.0
+theme_override_font_sizes/font_size = 38
+text = "0"
+
+[node name="PauseMenu" type="Control" parent="UI"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 0
+offset_right = 1151.0
+offset_bottom = 650.0
+
+[node name="Panel" type="Panel" parent="UI/PauseMenu"]
+layout_mode = 0
+offset_right = 1155.0
+offset_bottom = 648.0
+
+[node name="Label" type="Label" parent="UI/PauseMenu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -54.5
+offset_top = 8.0
+offset_right = 54.5
+offset_bottom = 52.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 31
+text = "Paused"
+
+[node name="Button" type="Button" parent="UI/PauseMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -44.0
+offset_top = -15.5
+offset_right = 44.0
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Start Over"
+
+[node name="ContinueButton" type="Button" parent="UI/PauseMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -39.5
+offset_top = -62.0
+offset_right = 39.5
+offset_bottom = -31.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Continue"
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_53f0a")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(581, 330)
+scale = Vector2(0.36, 22.96)
+texture = ExtResource("5_j4uiv")
+
+[connection signal="body_entered" from="WorldBoundaries/AreaPlayerGoal" to="." method="_on_ball_enter_player_goal"]
+[connection signal="body_entered" from="WorldBoundaries/AreaAiGoal" to="." method="_on_ball_enter_ai_goal"]
+[connection signal="pressed" from="UI/PauseMenu/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="UI/PauseMenu/ContinueButton" to="." method="_on_continue_button_pressed"]
